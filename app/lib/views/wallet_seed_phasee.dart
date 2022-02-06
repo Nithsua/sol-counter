@@ -1,6 +1,7 @@
 import 'package:blop/main.dart';
 import 'package:blop/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:solana/encoder.dart';
 import 'package:solana/solana.dart' as solana;
 
 class WalletRecovery extends StatelessWidget {
@@ -36,19 +37,11 @@ class WalletRecovery extends StatelessWidget {
 }
 
 Future<solana.Wallet> initializeWallet(String seedPhase) async {
-  print(seedPhase);
   solana.Ed25519HDKeyPair signer =
       await solana.Ed25519HDKeyPair.fromSeedWithHdPath(
-              seed: solana.Buffer.fromString(seedPhase).toList(),
+              seed: Buffer.fromString(seedPhase).toList(),
               hdPath: "m/44'/501'/0'/0'")
           .whenComplete(() => print("Signer Created"));
 
-  // await solana.Ed25519HDKeyPair.fromPrivateKeyBytes(
-  //         privateKey: seedPhase.codeUnits.sublist(0, 32))
-  //     .whenComplete(() => print("signer created"));
-  solana.RPCClient client = solana.RPCClient("https://api.devnet.solana.com");
-
-  final wallet = solana.Wallet(signer: signer, rpcClient: client);
-  print(wallet.address);
-  return wallet;
+  return signer;
 }
