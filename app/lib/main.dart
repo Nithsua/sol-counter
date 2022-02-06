@@ -13,37 +13,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Solana Counter",
-        home: FutureBuilder(
-            future: AuthServices.isSignedIn(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  return CounterView(seedPhase: (snapshot.data as String));
-                } else {
-                  return WalletRecovery();
-                }
-              } else {
-                return Scaffold(
-                    body: Column(
-                  children: const [
-                    Center(child: CircularProgressIndicator()),
-                  ],
-                ));
-              }
-            }));
+      title: "Solana Counter",
+      theme: ThemeData(
+        colorSchemeSeed: Colors.green,
+        useMaterial3: true,
+        brightness: Brightness.dark,
+      ),
+      home: FutureBuilder(
+        future: AuthServices.isSignedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              return CounterView(seedPhase: (snapshot.data as String));
+            } else {
+              return WalletRecovery();
+            }
+          } else {
+            return Scaffold(
+                body: Column(
+              children: const [
+                Center(child: CircularProgressIndicator()),
+              ],
+            ));
+          }
+        },
+      ),
+    );
   }
 }
 
-class CounterView extends StatefulWidget {
+class CounterView extends StatelessWidget {
   final String seedPhase;
   const CounterView({Key? key, required this.seedPhase}) : super(key: key);
 
-  @override
-  _CounterViewState createState() => _CounterViewState();
-}
-
-class _CounterViewState extends State<CounterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,21 +64,18 @@ class _CounterViewState extends State<CounterView> {
           ],
         ),
         body: FutureBuilder(
-            future: initializeWallet(widget.seedPhase),
+            future: initializeWallet(seedPhase),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData) {
-                final wallet = snapshot.data as solana.Wallet;
+                final wallet = snapshot.data as solana.Ed25519HDKeyPair;
                 return Row(children: [
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                          onPressed: () async {
-                            print(await wallet.getLamports() /
-                                solana.lamportsPerSol);
-                          },
+                          onPressed: () async {},
                           child: const Text("Initialize Counter"),
                         ),
                       ],
