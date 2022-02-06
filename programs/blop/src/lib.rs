@@ -1,11 +1,10 @@
 use anchor_lang::prelude::*;
 
-declare_id!("7maTFr5u82C5QgR18wSd6nhUaUx3JZFtQsBY9i9hCFkE");
+declare_id!("FWc9xvNjL9mTiUvVamm8DaYVHKT2aRW1n3VxmALKmQ5Z");
 
 #[program]
 pub mod blop {
     use super::*;
-
     pub fn create(ctx: Context<Create>) -> ProgramResult {
         let base_account = &mut ctx.accounts.base_account;
         base_account.count = 0;
@@ -20,7 +19,7 @@ pub mod blop {
 
 #[derive(Accounts)]
 pub struct Create<'info> {
-    #[account(init, payer = user, space = 16 + 16)]
+    #[account(init, payer = user)]
     pub base_account: Account<'info, BaseAccount>,
 
     #[account(mut)]
@@ -35,6 +34,7 @@ pub struct Increment<'info> {
 }
 
 #[account]
+#[derive(Default)]
 pub struct BaseAccount {
     pub count: u64,
 }

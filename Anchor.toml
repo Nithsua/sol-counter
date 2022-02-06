@@ -1,12 +1,12 @@
 [programs.localnet]
-blop = "7maTFr5u82C5QgR18wSd6nhUaUx3JZFtQsBY9i9hCFkE"
+blop = "FWc9xvNjL9mTiUvVamm8DaYVHKT2aRW1n3VxmALKmQ5Z"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "localnet"
-wallet = "/home/nivas/.config/solana/id.json"
+wallet = "/home/nithsua/.config/solana/id.json"
 
 [scripts]
 test = "ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
